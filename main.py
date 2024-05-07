@@ -6,8 +6,6 @@ from pathlib2 import Path
 
 from model.diffusion_sampler import DDIM
 from model.unet import ConditionalUNet
-from train import save_samples_image, save_generated_image
-
 
 def remove_module_prefix(state_dict):
     """
