@@ -401,14 +401,14 @@ This configuration outlines the setup for training a diffusion model with a U-Ne
 - `beta`: [0.0001, 0.02] (beta values for noise scheduling)
 
 **Callback**:
-- `filepath`: "checkpoint/cifar10.pth" (where to save model checkpoints)
+- `filepath`: "callback/ddimp_cifar10.pth" (where to save model checkpoints)
 - `save_freq`: 1 (frequency to save checkpoints)
 
 **General training settings**:
 - `device`: "cuda:0" (GPU device)
 - `epochs`: 100 (number of training epochs)
 - `consume`: False (load checkpoint from disk)
-- `consume_path`: "checkpoint/cifar10.pth" (path to the checkpoint)
+- `consume_path`: "callback/ddimp_cifar10.pth" (path to the checkpoint)
 - `lr`: 0.0002 (learning rate)
 
 # Generation configuration (`generate_conf`)
