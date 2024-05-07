@@ -458,7 +458,7 @@ Images are reshaped to flatten the batch and sample dimensions, making them suit
 The grid is converted into a PIL image for further manipulation. If specified, the image is saved to a file path, and optionally, it is displayed on the screen.
 
 ### `save_samples_image`
-The `save_sample_image` function extends `save_image` to save multiple intermediate outputs.
+The `save_samples_image` function extends `save_generated_image` to save multiple intermediate outputs.
 
 #### Grid formation
 A list comprehension gathers each intermediate output to form grids. The grids are stacked to form a batch, which is then arranged into a final grid for display and saving.
