@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from model.diffusion_blocks import TimestepEmbedSequential, FusedResidualBlock, OptimizedAttentionBlock, Downsample, \
+from model.diffusion_blocks import TimestepEmbedSequential, FusedResidualBlock, OptimisedAttentionBlock, Downsample, \
     Upsample
 from model.utils import norm_layer, timestep_embedding
 
@@ -50,8 +50,8 @@ class ConditionalUNet(nn.Module):
                 nn.Conv2d(in_channels, model_channels, kernel_size=3, padding=1)
             )
         )
-        ch = model_channels                                  # initialize the current number of channels
-        ds = 1                                               # initialize downsampling factor
+        ch = model_channels                                  # initialise the current number of channels
+        ds = 1                                               # initialise downsampling factor
 
         down_block_chans = [model_channels]                  # keep track of channel counts at each level
         for level, mult in enumerate(channel_mult):
@@ -59,7 +59,7 @@ class ConditionalUNet(nn.Module):
                 self.down_blocks.append(
                     TimestepEmbedSequential(
                         FusedResidualBlock(ch, mult * model_channels, model_channels * 4, dropout),
-                        OptimizedAttentionBlock(mult * model_channels, num_heads=num_heads) if ds in attention_resolutions else nn.Identity()
+                        OptimisedAttentionBlock(mult * model_channels, num_heads=num_heads) if ds in attention_resolutions else nn.Identity()
                     )
                 )
                 down_block_chans.append(mult * model_channels)
@@ -76,7 +76,7 @@ class ConditionalUNet(nn.Module):
         # define the middle block
         self.middle_block = TimestepEmbedSequential(
             FusedResidualBlock(ch, ch, model_channels * 4, dropout),
-            OptimizedAttentionBlock(ch, num_heads=num_heads),
+            OptimisedAttentionBlock(ch, num_heads=num_heads),
             FusedResidualBlock(ch, ch, model_channels * 4, dropout)
         )
 
@@ -86,7 +86,7 @@ class ConditionalUNet(nn.Module):
             for i in range(num_res_blocks + 1):
                 self.up_blocks.append(TimestepEmbedSequential(
                     FusedResidualBlock(ch + down_block_chans.pop(), model_channels * mult, model_channels * 4, dropout),
-                    OptimizedAttentionBlock(model_channels * mult, num_heads=num_heads) if ds in attention_resolutions else nn.Identity(),
+                    OptimisedAttentionBlock(model_channels * mult, num_heads=num_heads) if ds in attention_resolutions else nn.Identity(),
                     Upsample(model_channels * mult, conv_resample) if level and i == num_res_blocks else nn.Identity()
                 ))
                 ch = model_channels * mult

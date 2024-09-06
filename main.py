@@ -35,7 +35,7 @@ def save_generated_image(images: torch.Tensor, nrow: int = 8, show: bool = True,
     Returns:
         concat image, a tensor with shape (height, width, channels).
     """
-    images = images * 0.5 + 0.5  # normalize images
+    images = images * 0.5 + 0.5  # normalise images
     if images.ndim == 5:  # (batch_size, sample, channels, height, width)
         images = images.view(-1, images.shape[2], images.shape[3], images.shape[4])  # merge batch and sample dimensions
 
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     # create labels tensor
     labels = torch.full((batch_size,), target_label, dtype=torch.long, device=device)
 
-    # initialize the sampler with model and configuration
+    # initialise the sampler with model and configuration
     sampler = DDIM(model, **cp["config"]["Trainer"]).to(device)
 
     # generate Gaussian noise

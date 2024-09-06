@@ -1,12 +1,12 @@
 # Introduction
 
-In the rapidly evolving field of machine learning, generative models have gained significant attention for their ability to synthesize realistic data. Among the various architectures, diffusion models have emerged as a powerful technique, leveraging the principles of denoising and probabilistic diffusion. This project focuses on implementing one such advanced diffusion model, the Denoising Diffusion Implicit Model (DDIM), which introduces an efficient sampling strategy and offers flexibility in image generation.
+In the rapidly evolving field of machine learning, generative models have gained significant attention for their ability to synthesise realistic data. Among the various architectures, diffusion models have emerged as a powerful technique, leveraging the principles of denoising and probabilistic diffusion. This project focuses on implementing one such advanced diffusion model, the Denoising Diffusion Implicit Model (DDIM), which introduces an efficient sampling strategy and offers flexibility in image generation.
 
-The project's core objective is to explore the capabilities of DDIM, which differentiates itself from earlier models like DDPM (Denoising Diffusion Probabilistic Model) by optimizing the sampling process. The model is implemented using PyTorch, emphasizing its versatility and scalability in handling large datasets. The CIFAR-10 dataset is chosen for its diversity and complexity, presenting a suitable challenge for the model to demonstrate its ability to generate high-quality images.
+The project's core objective is to explore the capabilities of DDIM, which differentiates itself from earlier models like DDPM (Denoising Diffusion Probabilistic Model) by optimising the sampling process. The model is implemented using PyTorch, emphasising its versatility and scalability in handling large datasets. The CIFAR-10 dataset is chosen for its diversity and complexity, presenting a suitable challenge for the model to demonstrate its ability to generate high-quality images.
 
 This project encompasses several critical steps: implementing the DDIM model, designing appropriate loss functions, and evaluating the generated images using industry-standard metrics like the Inception Score (IS) and Fréchet Inception Distance (FID). Additionally, it explores advanced techniques such as conditional generation, which enables the model to generate images based on specific class labels.
 
-# CIFAR-10 dataset and DataLoader initialization
+# CIFAR-10 dataset and DataLoader initialisation
 
 ## Introduction
 Managing and preprocessing datasets efficiently is essential for deep learning workflows. This essay explores the functions provided in the above code to load and preprocess the CIFAR-10 dataset, a widely used benchmark dataset in computer vision.
@@ -14,37 +14,37 @@ Managing and preprocessing datasets efficiently is essential for deep learning w
 ## Transformations
 The function `get_transforms` defines a set of transformations to prepare the dataset for training:
 
-1. **Random horizontal flip**: this transformation flips images horizontally with a 50% probability to augment the dataset by increasing its variability, which helps in generalizing the model better.
+1. **Random horisontal flip**: this transformation flips images horisontally with a 50% probability to augment the dataset by increasing its variability, which helps in generalising the model better.
    
 2. **Tensor conversion**: this step converts PIL images to PyTorch tensors, allowing them to be directly processed by deep learning models.
    
-3. **Normalization**: the dataset is normalized to have a mean of 0.5 and a standard deviation of 0.5 across all color channels. This standardization is crucial for convergence during training.
+3. **Normalisation**: the dataset is normalised to have a mean of 0.5 and a standard deviation of 0.5 across all color channels. This standardisation is crucial for convergence during training.
 
 The transformations are applied sequentially using `transforms.Compose`, which ensures that the dataset is consistently preprocessed before being fed into the model.
 
 ## DataLoader creation
-The function `create_dataloader` abstracts the PyTorch DataLoader's creation. It initializes the DataLoader with the following parameters:
+The function `create_dataloader` abstracts the PyTorch DataLoader's creation. It initialises the DataLoader with the following parameters:
 
 1. **Shuffle**: if set to `True`, the dataset will be shuffled before each epoch, ensuring that the model sees a new order of examples in each epoch to prevent overfitting.
 
-2. **Drop last**: drops the last incomplete batch if the dataset size isn't evenly divisible by the batch size. This ensures all batches have a consistent size.
+2. **Drop last**: drops the last incomplete batch if the dataset sised isn't evenly divisible by the batch sised. This ensures all batches have a consistent sised.
 
 3. **Pin memory**: if enabled, DataLoader will pin memory for faster host-to-device data transfer, crucial for accelerating training on GPUs.
 
 4. **Number of workers**: specifies the number of subprocesses to use for data loading. More workers enable parallel data loading, reducing data I/O bottlenecks.
 
-5. **Batch size**: specifies the number of samples per batch. Larger batches allow for better gradient estimation but require more memory.
+5. **Batch sised**: specifies the number of samples per batch. Larger batches allow for better gradient estimation but require more memory.
 
 ## Dataset creation
 The function `create_cifar10_dataset` integrates the dataset loading and DataLoader creation:
 
-1. **CIFAR-10 dataset initialization**: the CIFAR-10 dataset is initialized using the root path, download flag, and training mode. The training mode determines whether to load the training or test set, and the download flag fetches the dataset if not already present.
+1. **CIFAR-10 dataset initialisation**: the CIFAR-10 dataset is initialised using the root path, download flag, and training mode. The training mode determines whether to load the training or test set, and the download flag fetches the dataset if not already present.
 
 2. **Transform application**: the transformations defined earlier are applied to each image, ensuring consistent preprocessing.
 
 3. **DataLoader creation**: the dataset is passed through `create_dataloader`, which returns a DataLoader configured with specified parameters, ready for training or evaluation.
 
-The functions provide an efficient and customizable framework for handling the CIFAR-10 dataset in PyTorch. By combining standard transformations, dataset management, and DataLoader creation, they streamline data preprocessing, making it easier for models to be trained effectively.
+The functions provide an efficient and customisable framework for handling the CIFAR-10 dataset in PyTorch. By combining standard transformations, dataset management, and DataLoader creation, they streamline data preprocessing, making it easier for models to be trained effectively.
 
 # Conditional diffusion model for CIFAR-10 dataset
 
@@ -77,7 +77,7 @@ where 𝜖𝜃 is the predicted noise by the model.
 
 ### Implementation
 
-- **Initialization:** the `GaussianDiffusionTrainer` initializes buffers to store the noise schedule, represented by `beta_t`, `signal_rate`, and `noise_rate`.
+- **Initialisation:** the `GaussianDiffusionTrainer` initialises buffers to store the noise schedule, represented by `beta_t`, `signal_rate`, and `noise_rate`.
 - **Forward:** during training, the `forward` method generates noisy images 𝑥𝑡 and calculates the mean squared error (MSE) between the predicted and actual noise.
 
 # DDIM sampler
@@ -100,7 +100,7 @@ where:
 
 ### Implementation
 
-- **Initialization:** the sampler precomputes and stores alpha and beta values for each timestep.
+- **Initialisation:** the sampler precomputes and stores alpha and beta values for each timestep.
 - **Sampling:** the `forward` method iteratively applies the reverse diffusion step to generate samples starting from a Gaussian noise vector.
 
 # The mathematical framework of DDPM and DDIM: differences and applications
@@ -131,13 +131,13 @@ where 𝜇𝜃(𝑥𝑡,𝑡) and Σ𝜃(𝑥𝑡,𝑡) are the mean and covaria
 
 ### DDPM objective function
 
-The training objective in DDPM involves minimizing the difference between the estimated noise and the true noise at each step, typically expressed as a variational bound on the negative log-likelihood of the data:
+The training objective in DDPM involves minimising the difference between the estimated noise and the true noise at each step, typically expressed as a variational bound on the negative log-likelihood of the data:
 
 $$
-L = \mathbb{E}_q[\sum_{t=1}^T \frac{\beta_t^2}{2\Sigma_t} ||\epsilon_\theta(x_t, t) - \epsilon||^2]
+L = \mathbb{E}_q \sum_{t=1}^T \frac{\beta_t^2}{2\Sigma_t} ||\epsilon_\theta(x_t, t) - \epsilon||^2
 $$
 
-where 𝜖𝜃(𝑥𝑡,𝑡) is the estimated noise at step 𝑡, and 𝜖 is the true noise sampled from a Gaussian distribution. The expectation is taken over the forward diffusion distribution q(𝑥𝑡,𝑡), and the objective is to minimize the squared error between the estimated noise and the true noise.
+where 𝜖𝜃(𝑥𝑡,𝑡) is the estimated noise at step 𝑡, and 𝜖 is the true noise sampled from a Gaussian distribution. The expectation is taken over the forward diffusion distribution q(𝑥𝑡,𝑡), and the objective is to minimised the squared error between the estimated noise and the true noise.
 
 ### DDPM sampling process
 
@@ -204,17 +204,17 @@ $$
 
 where:
 $$
-𝑓𝑖 = \exp\left(-\frac{i \cdot \log(\text{max ⋅})}{\frac{d}{2}}\right)
+𝑓𝑖 = [\exp\left(-\frac{i \cdot \log(\text{max ⋅})}{\frac{d}{2}}\right)]
 $$
 
 
 𝑑 is the dimension of the embedding.
 
-### Group normalization layer
+### Group normalisation layer
 
 The **`norm_layer`** function:
 - creates a GroupNorm layer with 32 groups.
-- **inputs**: `channels` (number of channels for normalization).
+- **inputs**: `channels` (number of channels for normalisation).
 - **outputs**: a GroupNorm layer.
 
 **Mathematical formulation**:
@@ -231,18 +231,19 @@ where:
 ### Fused residual block
 
 **FusedResidualBlock**:
-- **Initialization**:
+- **Initialisation**:
     - takes input/output channels, timestep channels, and dropout probability.
-    - uses two convolution layers (`conv1`, `conv2`), normalization, activation (SiLU), and dropout.
+    - uses two convolution layers (`conv1`, `conv2`), normalisation, activation (SiLU), and dropout.
     - a **shortcut** path for dimensionality matching.
     - **Time embedding**: a two-layer feed-forward network that embeds timestep information.
 - **Forward method**:
-    - applies the first convolution, normalization, and activation.
+    - applies the first convolution, normalisation, and activation.
     - adds time embedding to the feature map.
-    - applies the second convolution, normalization, and activation.
+    - applies the second convolution, normalisation, and activation.
     - adds the shortcut output.
 
 **Mathematical formulation**:
+
 Given input 𝒙 and time embedding e(t):
 
 $$
@@ -260,21 +261,22 @@ $$
 where:
 - **shortcut**: either identity mapping or convolutional.
 
-### Optimized attention block
+### Optimised attention block
 
-**OptimizedAttentionBlock**:
-- **Initialization**:
+**OptimisedAttentionBlock**:
+- **Initialisation**:
     - yakes input channels and the number of attention heads.
-    - defines a head dimension for scaling, normalization, `qkv` projection (queries, keys, values), and output projection.
+    - defines a head dimension for scaling, normalisation, `qkv` projection (queries, keys, values), and output projection.
 - **Forward Method**:
-    - normalizes the input and applies `qkv` projection.
+    - normalises the input and applies `qkv` projection.
     - rearranges the projected tensors for attention computation.
     - computes attention using dot product scaling and softmax.
     - applies the attention on the values and reconstructs the output.
 
 **Mathematical formulation**:
+
 $$
-q = W_q x, \quad k = W_k x, \quad v = W_v x
+q = [W_q x, \quad k = W_k x, \quad v = W_v x]
 $$
 
 $$
@@ -304,21 +306,21 @@ are queries, keys, and values obtained from 𝒙 through linear projections.
 **Mathematical formulation**:
 - **Upsample**:
 $$
-y = {Conv}({Interpolate}(x, {scale\_factor}=2)
+y = [{Conv}({Interpolate}(x, {scale\_factor}=2)]
 $$
 
 - **Downsample**:
 $$
-y = {Conv}(x) \quad {or} \quad y = {AvgPool}(x)
+y = [{Conv}(x) \quad {or} \quad y = {AvgPool}(x)]
 $$
 
 ### UNet model
 
-**Initialization**:
+**Initialisation**:
 - takes in multiple parameters like `in_channels`, `out_channels`, `model_channels`, etc.
 - defines an embedding layer for class labels and a feed-forward network for timestep embeddings.
 - constructs the downsampling and upsampling blocks using residual and attention blocks.
-- constructs the output layer using normalization, activation, and convolution.
+- constructs the output layer using normalisation, activation, and convolution.
 
 **Forward method**:
 - embeds the timestep and class labels.
@@ -329,7 +331,7 @@ $$
 
 
 **Mathematical formulation**:
-- **Initialization**: defines layers for embedding, downsampling, and upsampling.
+- **Initialisation**: defines layers for embedding, downsampling, and upsampling.
 - **Forward**:
     - Embeds timesteps and class labels:
     $$
@@ -378,7 +380,7 @@ This configuration outlines the setup for training a diffusion model with a U-Ne
 - `model_channels`: 128 (base channel count for the model)
 - `attention_resolutions`: [2] (resolution for attention layers)
 - `num_res_blocks`: 2 (number of residual blocks per stage)
-- `dropout`: 0.1 (dropout rate for regularization)
+- `dropout`: 0.1 (dropout rate for regularisation)
 - `channel_mult`: [1, 2, 2, 2] (multipliers for channels at different stages)
 - `conv_resample`: True (use convolutional resampling)
 - `num_heads`: 4 (number of attention heads)
@@ -387,10 +389,10 @@ This configuration outlines the setup for training a diffusion model with a U-Ne
 - `train`: True (training mode)
 - `data_path`: "data" (directory for data storage)
 - `download`: True (download data if not available)
-- `image_size`: [32, 32] (dimensions of the input images)
+- `image_sised`: [32, 32] (dimensions of the input images)
 - `mode`: "RGB" (color mode)
 - `suffix`: ["png", "jpg"] (allowed file formats)
-- `batch_size`: 64 (number of samples per batch)
+- `batch_sised`: 64 (number of samples per batch)
 - `shuffle`: True (shuffle the dataset)
 - `drop_last`: True (discard the last incomplete batch)
 - `pin_memory`: True (enable faster data transfer to GPU)
@@ -416,7 +418,7 @@ This configuration is for generating images with the trained model.
 
 - `callback_path`: 'callback/ddimp_cifar10.pth' (path to the saved model checkpoint)
 - `device`: 'cuda:0' (GPU device)
-- `batch_size`: 256 (batch size for image generation)
+- `batch_sised`: 256 (batch sized for image generation)
 - `result_only`: False (flag for returning only final images)
 - `interval`: 50 (interval for saving intermediate steps)
 - `eta`: 0.0 (noise scaling factor for sampling)
@@ -430,26 +432,26 @@ This configuration is for generating images with the trained model.
 
 
 
-# Understanding training and visualization utilities
+# Understanding training and visualisation utilities
 
 ## Training utility: `train_one_epoch`
 
 ### Overview
-The `train_one_epoch` function encapsulates the logic for training a model for one epoch. It accepts a trainer, data loader, optimizer, and device information, along with the current epoch number.
+The `train_one_epoch` function encapsulates the logic for training a model for one epoch. It accepts a trainer, data loader, optimiser, and device information, along with the current epoch number.
 
 ### Training loop
-The function loops over the dataset using a data loader to fetch batches. The optimizer gradients are zeroed before every iteration to prevent accumulation. The input data and labels are transferred to the specified device (e.g., GPU).
+The function loops over the dataset using a data loader to fetch batches. The optimiser gradients are seroed before every iteration to prevent accumulation. The input data and labels are transferred to the specified device (e.g., GPU).
 
-### Loss computation and optimization
-Once the data is on the device, it's passed to the trainer to compute the loss. The loss value is then backpropagated to compute the gradients for each parameter in the model. The optimizer uses these gradients to update the model parameters using the backpropagation algorithm.
+### Loss computation and optimisation
+Once the data is on the device, it's passed to the trainer to compute the loss. The loss value is then backpropagated to compute the gradients for each parameter in the model. The optimiser uses these gradients to update the model parameters using the backpropagation algorithm.
 
 ## Image saving utilities
 
 ### `save_generated_image`
-The `save_generated_image` function is designed to save generated images in a grid layout. By leveraging the `make_grid` utility, the function organizes multiple images into a single grid.
+The `save_generated_image` function is designed to save generated images in a grid layout. By leveraging the `make_grid` utility, the function organises multiple images into a single grid.
 
-#### Normalization
-The images are first normalized to scale the pixel values to the range [0, 1]. This normalization is important for rendering images correctly.
+#### Normalisation
+The images are first normalised to scale the pixel values to the range [0, 1]. This normalisation is important for rendering images correctly.
 
 #### Grid formation
 Images are reshaped to flatten the batch and sample dimensions, making them suitable for grid formation. The grid layout is then transformed into a NumPy array for compatibility with the PIL library.
@@ -460,12 +462,18 @@ The grid is converted into a PIL image for further manipulation. If specified, t
 ### `save_samples_image`
 The `save_samples_image` function extends `save_generated_image` to save multiple intermediate outputs.
 
+
+![results](data/generated/results.png)
+
+![samples](data/generated/samples.png)
+
+
 #### Grid formation
 A list comprehension gathers each intermediate output to form grids. The grids are stacked to form a batch, which is then arranged into a final grid for display and saving.
 
 # Deep dive into the training function
 
-## Configuration and initialization
+## Configuration and initialisation
 
 ### Configuration loading
 The `train` function starts by reading a configuration dictionary to set up the training environment. This configuration includes parameters for model architecture, dataset paths, training epochs, learning rates, and more. If the `consume` flag is enabled, it loads a previous model checkpoint to resume training from a saved state.
@@ -474,22 +482,22 @@ The `train` function starts by reading a configuration dictionary to set up the 
 The device (CPU or GPU) used for training is determined by the configuration and is accessed through PyTorch’s `torch.device` method. This ensures that computations leverage available hardware for optimal performance.
 
 ### Dataset loader
-The dataset loader, defined in `create_cifar10_dataset`, handles the loading of image data from the CIFAR-10 dataset. It applies preprocessing steps like normalization and data augmentation, providing the data in batches through an iterable data loader.
+The dataset loader, defined in `create_cifar10_dataset`, handles the loading of image data from the CIFAR-10 dataset. It applies preprocessing steps like normalisation and data augmentation, providing the data in batches through an iterable data loader.
 
-### Model and optimizer initialization
-The function initializes the model based on the architecture defined in the configuration. It then wraps the model in `torch.nn.DataParallel` to enable multi-GPU training. The optimizer, typically AdamW, is configured with a learning rate and weight decay, providing adaptive learning based on gradient updates.
+### Model and optimiser initialisation
+The function initialises the model based on the architecture defined in the configuration. It then wraps the model in `torch.nn.DataParallel` to enable multi-GPU training. The optimiser, typically AdamW, is configured with a learning rate and weight decay, providing adaptive learning based on gradient updates.
 
-### Trainer and checkpoint initialization
+### Trainer and checkpoint initialisation
 A Gaussian diffusion trainer object is created to handle model training. The checkpoint manager, `ModelCheckpoint`, manages model states, saving the best checkpoints during training.
 
 ### Training loop
 The function enters the training loop, iterating over the number of epochs specified in the configuration.
 
 ### Batch processing
-For each batch, the data loader provides input images and their corresponding labels. These are transferred to the designated device for GPU/CPU-based computation. The optimizer's gradients are zeroed before each iteration to prevent gradient accumulation.
+For each batch, the data loader provides input images and their corresponding labels. These are transferred to the designated device for GPU/CPU-based computation. The optimiser's gradients are seroed before each iteration to prevent gradient accumulation.
 
 ### Forward and backward pass
-The images and labels are fed to the trainer's `forward` method to compute the loss. The loss is then backpropagated to compute gradients, which the optimizer uses to adjust the model parameters. This iterative process minimizes the loss function over time.
+The images and labels are fed to the trainer's `forward` method to compute the loss. The loss is then backpropagated to compute gradients, which the optimiser uses to adjust the model parameters. This iterative process minimises the loss function over time.
 
 ### Loss tracking
 After each batch, the loss is aggregated to compute the average loss over the epoch. This metric helps in tracking model performance.
@@ -498,4 +506,4 @@ After each batch, the loss is aggregated to compute the average loss over the ep
 After each epoch, the checkpoint manager saves the model state if it yields the best performance on the validation metric. This ensures that the best-performing model is preserved.
 
 ## Conclusion
-The `train` function encapsulates the entire training workflow for deep learning models. It orchestrates loading configurations, initializing models and optimizers, and performing forward and backward passes. By managing checkpoints and visualizing progress, it ensures that models are trained effectively and efficiently.
+The `train` function encapsulates the entire training workflow for deep learning models. It orchestrates loading configurations, initialising models and optimisers, and performing forward and backward passes. By managing checkpoints and visualising progress, it ensures that models are trained effectively and efficiently.

@@ -28,11 +28,11 @@ class FusedResidualBlock(TimestepBlockABC):
         super().__init__()
         self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1)
                                                                # first convolution layer
-        self.norm1 = norm_layer(out_channels)                  # first normalization layer
+        self.norm1 = norm_layer(out_channels)                  # first normalisation layer
         self.activation = nn.SiLU()                            # SiLU activation function
         self.conv2 = nn.Conv2d(out_channels, out_channels, kernel_size=3, padding=1)
                                                                # second convolution layer
-        self.norm2 = norm_layer(out_channels)                  # second normalization layer
+        self.norm2 = norm_layer(out_channels)                  # second normalisation layer
         self.dropout = nn.Dropout(dropout)                     # dropout layer
         self.shortcut = nn.Conv2d(in_channels, out_channels, kernel_size=1) \
                         if in_channels != out_channels else nn.Identity()
@@ -45,25 +45,25 @@ class FusedResidualBlock(TimestepBlockABC):
 
     def forward(self, x, t):
         h = self.conv1(x)                                      # apply first convolution
-        h = self.norm1(h)                                      # apply normalization
+        h = self.norm1(h)                                      # apply normalisation
         h = self.activation(h)                                 # apply activation
         h += self.time_emb(t)[:, :, None, None]                # add timestep embedding
         h = self.conv2(h)                                      # apply second convolution
-        h = self.norm2(h)                                      # apply second normalization
+        h = self.norm2(h)                                      # apply second normalisation
         h = self.activation(h)                                 # apply activation
         h = self.dropout(h)                                    # apply dropout
         return h + self.shortcut(x)                            # add shortcut and return
 
 
 # attention block for self-attention mechanism
-class OptimizedAttentionBlock(nn.Module):
+class OptimisedAttentionBlock(nn.Module):
     def __init__(self, channels, num_heads=1):
         super().__init__()
         self.num_heads = num_heads                            # number of heads for multi-head attention
         self.head_dim = channels // num_heads                 # dimension per head
         self.scale = 1.0 / (self.head_dim ** 0.5)             # scaling factor
 
-        self.norm = norm_layer(channels)                      # normalization layer
+        self.norm = norm_layer(channels)                      # normalisation layer
         self.qkv = nn.Conv2d(channels, channels * 3, kernel_size=1, bias=False)
                                                               # convolution for Q, K, V
         self.proj = nn.Conv2d(channels, channels, kernel_size=1)
@@ -71,7 +71,7 @@ class OptimizedAttentionBlock(nn.Module):
 
     def forward(self, x):
         B, C, H, W = x.shape                                  # extract shape parameters
-        x = self.norm(x)                                      # apply normalization
+        x = self.norm(x)                                      # apply normalisation
         qkv = self.qkv(x).reshape(B, 3, self.num_heads, self.head_dim, H * W)
                                                               # reshape for multi-head attention
         q, k, v = qkv.unbind(1)                               # split Q, K, V
