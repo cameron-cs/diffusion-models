@@ -27,7 +27,7 @@ The function `create_dataloader` abstracts the PyTorch DataLoader's creation. It
 
 1. **Shuffle**: if set to `True`, the dataset will be shuffled before each epoch, ensuring that the model sees a new order of examples in each epoch to prevent overfitting.
 
-2. **Drop last**: drops the last incomplete batch if the dataset sised isn't evenly divisible by the batch sised. This ensures all batches have a consistent sised.
+2. **Drop last**: drops the last incomplete batch if the dataset sized isn't evenly divisible by the batch sised. This ensures all batches have a consistent sised.
 
 3. **Pin memory**: if enabled, DataLoader will pin memory for faster host-to-device data transfer, crucial for accelerating training on GPUs.
 
